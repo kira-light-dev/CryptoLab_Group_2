@@ -1,0 +1,14 @@
+rules:
+  - id: python-sqlite-sqli
+    pattern: $CURSOR.execute(...)
+    message: "SQL Injection detected: Dynamic query execution in database call."
+    languages:
+      - python
+    severity: ERROR
+
+  - id: plaintext-password-logging
+    pattern: print(...)
+    message: "Sensitive Data Exposure: Plaintext output printed to console."
+    languages:
+      - python
+    severity: WARNING

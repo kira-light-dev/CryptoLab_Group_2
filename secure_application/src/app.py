@@ -10,27 +10,32 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Vulnerability 1: SQL Injection
 def login(username, password):
     conn = sqlite3.connect('bank.db')
     cursor = conn.cursor()
-    # Direct string concatenation causes SQLi
     query = f"SELECT * FROM users WHERE name = '{username}' AND pass = '{password}'"
+    #query = "SELECT * FROM users WHERE name = ? AND pass = ?"
     
-    # Vulnerability 2: Sensitive Data Exposure (Printing credentials)
     print(f"[LOG]: Attempted login with Password: {password}")
     
-    cursor.execute(query)
-    user = cursor.fetchone()
-    conn.close()
+    try:
+        cursor.execute(query)
+        user = cursor.fetchone()
+    except sqlite3.OperationalError as e:
+        print(f"[DATABASE ERROR]: {e}")
+        user = None
+    finally:
+        conn.close()
+        
     return user
 
-# Vulnerability 3: Broken Access Control (IDOR)
 def check_balance(account_id):
     conn = sqlite3.connect('bank.db')
     cursor = conn.cursor()
-    # Does not check if the logged-in user owns this account_id
+
     cursor.execute("SELECT name, balance FROM users WHERE id = ?", (account_id,))
+    #if str(session_user_id) != str(target_account_id):
+    #    return "Access Denied: You do not have permission to view this account."
     data = cursor.fetchone()
     conn.close()
     return data

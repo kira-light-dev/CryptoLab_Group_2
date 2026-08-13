@@ -1,0 +1,61 @@
+                    
+                    
+┌──────────────────┐
+│ 17 Code Findings │
+└──────────────────┘
+                             
+  [36m[22m[24m  src/app.py[0m
+   ❯❯❱ python-sqlite-sqli
+          SQL Injection detected: Dynamic query execution in database call.
+                                                                           
+            6┆ cursor.execute("CREATE TABLE IF NOT EXISTS users (id INT, name TEXT, pass TEXT, balance
+               REAL)")                                                                                
+            ⋮┆----------------------------------------
+            7┆ cursor.execute("DELETE FROM users")
+            ⋮┆----------------------------------------
+            8┆ cursor.execute("INSERT INTO users VALUES (1, 'alice', 'pass123', 5000.0)")
+            ⋮┆----------------------------------------
+            9┆ cursor.execute("INSERT INTO users VALUES (2, 'bob', 'pass456', 10000.0)")
+   
+    ❯❱ plaintext-password-logging
+          Sensitive Data Exposure: Plaintext output printed to console.
+                                                                       
+           19┆ print(f"[LOG]: Attempted login with Password: {password}")
+   
+   ❯❯❱ python-sqlite-sqli
+          SQL Injection detected: Dynamic query execution in database call.
+                                                                           
+           22┆ cursor.execute(query)
+   
+    ❯❱ plaintext-password-logging
+          Sensitive Data Exposure: Plaintext output printed to console.
+                                                                       
+           25┆ print(f"[DATABASE ERROR]: {e}")
+   
+   ❯❯❱ python-sqlite-sqli
+          SQL Injection detected: Dynamic query execution in database call.
+                                                                           
+           36┆ cursor.execute("SELECT name, balance FROM users WHERE id = ?", (account_id,))
+            ⋮┆----------------------------------------
+           46┆ cursor.execute("UPDATE users SET balance = balance - ? WHERE id = ?", (amount, sender_id))
+            ⋮┆----------------------------------------
+           47┆ cursor.execute("UPDATE users SET balance = balance + ? WHERE id = ?", (amount,
+               receiver_id))                                                                 
+   
+    ❯❱ plaintext-password-logging
+          Sensitive Data Exposure: Plaintext output printed to console.
+                                                                       
+           50┆ print("Transfer successful!")
+            ⋮┆----------------------------------------
+           54┆ print("=== Simple Online Banking ===")
+            ⋮┆----------------------------------------
+           61┆ print(f"\nWelcome, {user[1]}!")
+            ⋮┆----------------------------------------
+           62┆ print("1. Check Balance")
+            ⋮┆----------------------------------------
+           63┆ print("2. Transfer Money")
+            ⋮┆----------------------------------------
+           69┆ print(f"Account Data: {bal}")
+            ⋮┆----------------------------------------
+           75┆ print("Login failed.")
+
